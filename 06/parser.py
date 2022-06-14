@@ -1,9 +1,9 @@
 from operator import truediv
 import re
 
-A_COMMAND = re.compile(r'@\w+')
+A_COMMAND = re.compile(r'@(?:\w|.)+')
 C_COMMAND = re.compile(r'(?:(null|(?:A?M?D?))=)?(0|1|\-1|[AMD][\+\-]1|D[\+\-&\|][AM]|[AM]\-D|[!\-]?[AMD])(?:;(null|(?:J(?:GT|EQ|GE|LT|NE|LE|MP))))?')
-L_COMMAND = re.compile(r'\(\w+\)')
+L_COMMAND = re.compile(r'\((?:\w|.)+\)')
 
 class Parser:
     def __init__(self, file):
@@ -13,7 +13,7 @@ class Parser:
     def __enter__(self):
         return self
     
-    def __exit__(self):
+    def __exit__(self, ex_type, ex_value, trace):
         self.f.close()
 
     def advance(self):
@@ -44,7 +44,7 @@ class Parser:
         if cmd_type == 'A_COMMAND':
             return self.command[1:]
         elif cmd_type == 'L_COMMAND':
-            return self.command[1:-2]
+            return self.command[1:-1]
 
     def dest(self):
         m = C_COMMAND.match(self.command)
