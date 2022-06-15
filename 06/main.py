@@ -1,4 +1,3 @@
-from symtable import Symbol
 import sys
 import parser
 import code
